@@ -38,7 +38,6 @@ class MemberServiceTest {
         //then : 모든 데이터가 정상 저장된다.
         assertTrue(memberRepository.find(username).isPresent());
         assertTrue(logRepository.find(username).isPresent());
-
     }
 
     /**
@@ -58,5 +57,23 @@ class MemberServiceTest {
         //then : 회원은 등록되는데 로그는 등록되지 않는다.
         assertTrue(memberRepository.find(username).isPresent());
         assertTrue(logRepository.find(username).isEmpty());
+    }
+
+    /**
+     * memberService    @Transactional:ON
+     * memberRepository @Transactional:OFF
+     * logRepository    @Transactional:OFF
+     */
+    @Test
+    public void singleTx() {
+        //given
+        String username = "singleTx";
+
+        //when
+        memberService.joinV1(username);
+
+        //then
+        assertTrue(memberRepository.find(username).isPresent());
+        assertTrue(logRepository.find(username).isPresent());
     }
 }
